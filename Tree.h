@@ -1,7 +1,7 @@
 #pragma once
 
 class Tree{
-  private:
+  protected:
 	class TreeNode{
 	  public:
 		char value;
@@ -18,7 +18,7 @@ class Tree{
 	Tree() : root(nullptr){};
 	Tree(TreeNode *_root) : root(_root){};
 	~Tree();
-	TreeNode &find();
-	void insert(TreeNode *treeNode);
-	void Delete(char key);
+	virtual TreeNode *find(char key);
+	virtual void insert(TreeNode *treeNode);
+	virtual void Delete(char key);
 };
