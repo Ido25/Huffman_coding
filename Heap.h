@@ -16,6 +16,7 @@ class Heap{
 		
 		pair &operator=(pair &org);
 	};
+	//TODO: decide how to deal with: , . ' ' ! ? and so on
 	pair heap[MAX_SIZE];
 	int heap_size;
   
