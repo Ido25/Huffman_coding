@@ -1,14 +1,16 @@
 #pragma once
 
+#include "Pair.h"
+
 class Tree{
   protected:
 	class TreeNode{
 	  public:
-		char value;
+		DataPair data;
 		TreeNode *left, *right;
 		TreeNode() : left(nullptr), right(nullptr){};
-		TreeNode(char _value, TreeNode *_left = nullptr, TreeNode *_right = nullptr) : value(_value), left(_left),
-																					   right(_right){};
+		TreeNode(DataPair _data, TreeNode *_left = nullptr, TreeNode *_right = nullptr) : data(_data), left(_left),
+																						  right(_right){};
 		~TreeNode(){};
 	};
 	TreeNode *root;

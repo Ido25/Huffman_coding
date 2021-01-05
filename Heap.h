@@ -1,23 +1,13 @@
 #pragma once
 
 #include <iostream>
+#include "Pair.h"
 
 using namespace std;
-#define MAX_SIZE 52
+
 class Heap{
   private:
-	class pair{
-	  public:
-		int priority;
-		char val;
-		pair(){};
-		pair(int _key, char _val) : priority(_key), val(_val){};
-		~pair(){};
-		
-		pair &operator=(pair &org);
-	};
-	//TODO: decide how to deal with: , . ' ' ! ? and so on
-	pair heap[MAX_SIZE];
+	DataPair *heap;
 	int heap_size;
   
   public:
@@ -26,10 +16,10 @@ class Heap{
 	
 	void makeEmpty(){ heap_size = 0; };
 	bool isEmpty(){ return heap_size == 0; };
-	void insert(pair item);
-	char min(){ return this->heap_size == 0 ? 0 : this->heap[0].val; }
-	pair &deleteMin();
-	void buildHeap(int size);
+	void insert(DataPair item);
+	char min(){ return this->heap_size == 0 ? 0 : this->heap[0].getValue(); }
+	DataPair &deleteMin();
+	void buildHeap(DataPair *arr, int size);
 	void fixHeap(int idx);
-	void swap(pair &first, pair &second);
+	void swap(DataPair &first, DataPair &second);
 };

@@ -13,4 +13,5 @@ class SearchTree : public Tree{
 	virtual TreeNode *find(char key);
 	virtual void insert(TreeNode *treeNode);
 	virtual void Delete(char key);
+	SearchTree *buildTree(DataPair *arr);
 };

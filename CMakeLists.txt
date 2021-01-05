@@ -3,4 +3,4 @@ project(Huffman)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(Huffman main.cpp Heap.h Heap.cpp Tree.h Tree.cpp SearchTree.h SearchTree.cpp)
+add_executable(Huffman main.cpp Heap.h Heap.cpp Tree.h Tree.cpp SearchTree.h SearchTree.cpp Pair.h Pair.cpp)
