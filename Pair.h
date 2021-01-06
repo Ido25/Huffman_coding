@@ -1,24 +1,32 @@
-#include <iostream>
+#pragma once
 
-#define MAX_SIZE 128
+#include <iostream>
+#include "configs.h"
 
 using namespace std;
 
-class DataPair{
+class Pair{
   private:
-	int priority;
+	unsigned int priority;
 	char value;
   
   public:
-	DataPair(){};
-	DataPair(int _key, char _val) : priority(_key), value(_val){};
-	~DataPair(){};
+	Pair(){};
+	Pair(unsigned int _key , char _val) : priority(_key), value(_val){};
+	~Pair(){};
 	
 	char getValue(){ return this->value; }
 	int getPriority(){ return this->priority; }
 	bool setPriority(int pr){ return this->priority = pr; };
 	bool setvalue(char val){ return this->value = val; };
 	
-	DataPair &operator=(DataPair &org);
-	DataPair &operator++(){ this->priority++; };
+	Pair &operator=(const Pair &org);
+	Pair &operator++();
+	
+	friend ostream &operator<<(ostream &os, const Pair &org){
+		
+		os << "Priority: " << org.priority << ", Value: " << org.value << endl;
+		
+		return os;
+	}
 };

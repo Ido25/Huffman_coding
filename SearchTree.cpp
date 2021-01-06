@@ -1,13 +1,14 @@
 #include "SearchTree.h"
-//TODO: change to priority instead of value?
-Tree::TreeNode *SearchTree::find(char key){
+
+
+TreeNode *SearchTree::find(unsigned int key){
 	
 	TreeNode *curr = this->root;
 	
 	while(curr != nullptr){
-		if(curr->data.getValue() == key)
+		if(curr->data.getPriority() == key)
 			return curr;
-		else if(key < curr->data.getValue())
+		else if(key < curr->data.getPriority())
 			curr = curr->left;
 		else
 			curr = curr->right;
@@ -15,7 +16,7 @@ Tree::TreeNode *SearchTree::find(char key){
 	
 	return curr;
 }
-void SearchTree::Delete(char key){
+void SearchTree::Delete(unsigned int key){
 	
 	TreeNode *parent = findParent(key), *curr = find(key);
 	
@@ -30,7 +31,7 @@ void SearchTree::Delete(char key){
 			parent->right = curr->right;
 	}
 	else{
-		TreeNode *max = findMax(curr->left), *maxParent = findParent(max->data.getValue());
+		TreeNode *max = findMax(curr->left), *maxParent = findParent(max->data.getPriority());
 		maxParent->right = max->left;
 		max->right = curr->right;
 		max->left = curr->left;
@@ -39,23 +40,23 @@ void SearchTree::Delete(char key){
 	
 	delete curr;
 }
-Tree::TreeNode *SearchTree::findParent(char key){
+TreeNode *SearchTree::findParent(unsigned int key){
 	
 	TreeNode *curr = this->root;
 	
 	while(curr != nullptr){
-		if(key < curr->data.getValue())
+		if(key < curr->data.getPriority())
 			if(curr->left == nullptr)
 				break;
 			else{
-				if(curr->left->data.getValue() == key)
+				if(curr->left->data.getPriority() == key)
 					break;
 				curr = curr->left;
 			}
 		else if(curr->right == nullptr)
 			break;
 		else{
-			if(curr->right->data.getValue() == key)
+			if(curr->right->data.getPriority() == key)
 				break;
 			curr = curr->right;
 		}
@@ -63,7 +64,7 @@ Tree::TreeNode *SearchTree::findParent(char key){
 	
 	return curr;
 }
-Tree::TreeNode *SearchTree::findMax(Tree::TreeNode *treeNode){
+TreeNode *SearchTree::findMax(TreeNode *treeNode){
 	
 	TreeNode *curr = treeNode;
 	while(curr->right != nullptr){
@@ -72,38 +73,23 @@ Tree::TreeNode *SearchTree::findMax(Tree::TreeNode *treeNode){
 	
 	return curr;
 }
-void SearchTree::insert(Tree::TreeNode *treeNode){
+TreeNode * SearchTree::getTreeAsArr(){
 	
-	TreeNode *curr = this->root;
-	bool inserted = false;
+	TreeNode *arr = allocate<TreeNode>(this->length);
 	
-	while(!inserted && curr != nullptr){
-		if(treeNode->data.getPriority() =< curr->data.getPriority()){
-			if(curr->left == nullptr){
-				curr->left = treeNode;
-				inserted = true;
-			}
-			else
-				curr = curr->left;
-		}
-		else{
-			if(curr->right == nullptr){
-				curr->right = treeNode;
-				inserted = true;
-			}
-			else
-				curr = curr->right;
-		}
-	}
+	int i = 0;
+	this->getTreeAsArr(arr, this->root, this->length, i);
+	
+	return arr;
 }
-SearchTree *SearchTree::buildTree(DataPair *arr){
+void SearchTree::getTreeAsArr(TreeNode *arr, TreeNode *curr, int size, int &i){
 	
-	SearchTree *tree = new SearchTree;
+	if(curr == nullptr || arr == nullptr || i > size)
+		return;
 	
-	for(int i = 0; i < MAX_SIZE; i++)
-		if(arr[i].getPriority() > 0)
-			tree->insert(new TreeNode(arr[i]));
+	this->getTreeAsArr(arr, curr->leftChild(), size, i);
 	
-	return tree;
+	arr[i++].data = curr->data;
+	
+	this->getTreeAsArr(arr, curr->rightChild(), size, i);
 }
-

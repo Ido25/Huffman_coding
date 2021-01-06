@@ -1,17 +1,20 @@
 #pragma once
 
-#include "Tree.h"
+#include "BinaryTree.h"
+#include "configs.h"
 
-class SearchTree : public Tree{
+class SearchTree : public BinaryTree{
   private:
-	TreeNode *findParent(char key);
+	TreeNode *findParent(unsigned int key);
 	TreeNode *findMax(TreeNode *treeNode);
-  public:
-	SearchTree(){};
-	~SearchTree(){};
+	void getTreeAsArr(TreeNode *arr, TreeNode *curr, int size, int &i);
 	
-	virtual TreeNode *find(char key);
-	virtual void insert(TreeNode *treeNode);
-	virtual void Delete(char key);
-	SearchTree *buildTree(DataPair *arr);
+  public:
+	SearchTree() : BinaryTree(){};
+	virtual ~SearchTree(){};
+	
+	virtual TreeNode *find(unsigned int key);
+	virtual void Delete(unsigned int key);
+	
+	TreeNode * getTreeAsArr();
 };

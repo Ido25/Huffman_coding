@@ -1,12 +1,18 @@
 #include "Pair.h"
 
-DataPair &DataPair::operator=(DataPair &org){
+Pair &Pair::operator=(const Pair &org){
 	
-	if(this->value == org.value)
+	if(this == &org)
 		return *this;
 	
 	this->priority = org.priority;
 	this->value = org.value;
+	
+	return *this;
+}
+Pair &Pair::operator++(){
+	
+	this->priority++;
 	
 	return *this;
 }
