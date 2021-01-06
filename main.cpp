@@ -1,42 +1,37 @@
 #include <iostream>
 #include <fstream>
-#include "Heap.h"
+#include "MinimumHeap.h"
 #include "SearchTree.h"
+#include "Huffman.h"
 
 int main(){
 	
-	DataPair buckets[MAX_SIZE];
-	SearchTree *tr;
-	char fname[MAX_SIZE], tmp;
+	char fname[MAX_SIZE];
 	ifstream infile;
-	
-	for(int i = 0; i < MAX_SIZE; i++){
-		buckets[i].setPriority(0);
-		buckets[i].setvalue(i);
-	}
 	
 	cout << "Please enter the file's name: " << endl;
 	cin >> fname;
 	
 	infile.open(fname);
-	if(!infile){
-		cout << "Error with file opening" << endl;
-		exit(1);
-	}
+	if(!infile)
+		HandleError();
 	
-	infile >> tmp;
-	++buckets[tmp];
-	while(!infile.eof()){
-		if(!infile.good()){
-			cout << "Error with file reading" << endl;
-			exit(1);
-		}
-		
-		infile >> tmp;
-		++buckets[tmp];
-	}
+	// build search tree
+	Pair *buckets = getBuckets(infile);
+	SearchTree sr = buildSearchTreeFromBuckets(buckets);
 	
-	tr->buildTree(buckets);
+	// this function build huffman tree from search tree
+	TreeNode *huffman = buildHuffmanTree(sr);
+	
+	// this function prints the huffman coding
+	printHuffmanCoding(huffman);
+	
+	// compute file weight in bytes
+	int depth = 0, sum_in_bytes = 0;
+	getHuffmanWeight(huffman, depth, sum_in_bytes);
+	
+	// print the weight in bytes
+	cout << endl << "Encoded file weight: " << sum_in_bytes << " bits" << endl;
 	
 	infile.close();
 	return 0;
