@@ -3,4 +3,4 @@ project(Huffman)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(Huffman main.cpp MinimumHeap.h MinimumHeap.cpp BinaryTree.h BinaryTree.cpp SearchTree.h SearchTree.cpp Pair.h Pair.cpp configs.h Huffman.cpp Huffman.h TreeNode.cpp TreeNode.h)
+add_executable(Huffman main.cpp PriorityQueue.h PriorityQueue.cpp BinaryTree.h BinaryTree.cpp SearchTree.h SearchTree.cpp Pair.h Pair.cpp configs.h Huffman.cpp Huffman.h TreeNode.cpp TreeNode.h)

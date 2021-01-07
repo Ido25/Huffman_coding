@@ -23,7 +23,7 @@ class TreeNode{
 	TreeNode *leftChild(){ return this->left; }
 	TreeNode *rightChild(){ return this->right; }
 	
-	int getPriority(){ return this->data.getPriority(); }
+	unsigned int getPriority(){ return this->data.getPriority(); }
 	char getValue(){ return this->data.getValue(); }
 	
 	TreeNode &operator=(const TreeNode &org);

@@ -1,16 +1,16 @@
-#include "MinimumHeap.h"
+#include "PriorityQueue.h"
 
 using namespace std;
 
-MinimumHeap::MinimumHeap(int _max_size){
+PriorityQueue::PriorityQueue(int _max_size){
 	
-	this->arr = allocate<TreeNode>(_max_size);
+	this->arr = allocate<TreeNode *>(_max_size);
 	
 	this->max_size = _max_size;
 	this->heap_size = 0;
 	this->allocated = true;
 }
-MinimumHeap::MinimumHeap(TreeNode *_Array, int size){
+PriorityQueue::PriorityQueue(TreeNode **_Array, int size){
 	
 	this->arr = _Array;
 	this->heap_size = this->max_size = size;
@@ -20,14 +20,14 @@ MinimumHeap::MinimumHeap(TreeNode *_Array, int size){
 	for(int i = (size / 2) - 1; i >= 0; i--)
 		this->heapify(i);
 }
-MinimumHeap::~MinimumHeap(){
+PriorityQueue::~PriorityQueue(){
 	
 	if(this->allocated)
 		delete[] this->arr;
 	
 	this->arr = nullptr;
 }
-void MinimumHeap::heapify(int node){
+void PriorityQueue::heapify(int node){
 	
 	// This function fix the heap that has node as root
 	
@@ -40,19 +40,24 @@ void MinimumHeap::heapify(int node){
 		left = this->getLeft(min);
 		right = this->getRight(min);
 		
-		if(left < this->heap_size && this->arr[left].getPriority() < this->arr[node].getPriority())
+		if(left < this->heap_size && this->arr[left]->getPriority() < this->arr[node]->getPriority())
 			min = left;
 		else
 			min = node;
 		
-		if(right < this->heap_size && this->arr[right].getPriority() < this->arr[min].getPriority())
+		if(right < this->heap_size && this->arr[right]->getPriority() < this->arr[min]->getPriority())
 			min = right;
 		
-		if(min != node)
+		if(min != node){
 			swap(this->arr[node], this->arr[min]);
+			int temp = node;
+			node = min;
+			min = temp;
+		}
+		
 	} while(min != node);
 }
-TreeNode MinimumHeap::deleteMin(){
+TreeNode *PriorityQueue::deleteMin(){
 	
 	if(heap_size < 1)
 		HandleError();
@@ -64,39 +69,39 @@ TreeNode MinimumHeap::deleteMin(){
 	
 	return min;
 }
-void MinimumHeap::insert(TreeNode &item){
+void PriorityQueue::insert(TreeNode *item){
 	
 	if(this->heap_size == this->max_size)
 		HandleError();
 	
 	int idx = this->heap_size++;
 	
-	while(idx > 0 && (item.getPriority() < this->arr[this->getParent(idx)].getPriority())){
+	while(idx > 0 && (item->getPriority() < this->arr[this->getParent(idx)]->getPriority())){
 		this->arr[idx] = this->arr[this->getParent(idx)];
 		idx = this->getParent(idx);
 	}
 	
 	this->arr[idx] = item;
 }
-int MinimumHeap::getLeft(int node){
+int PriorityQueue::getLeft(int node){
 	
 	return node * 2 + 1;
 }
-int MinimumHeap::getRight(int node){
+int PriorityQueue::getRight(int node){
 	
 	return node * 2 + 2;
 }
-int MinimumHeap::getParent(int node){
+int PriorityQueue::getParent(int node){
 	
 	return (node - 1) / 2;
 }
-void MinimumHeap::swap(TreeNode &a, TreeNode &b){
+void PriorityQueue::swap(TreeNode *&a, TreeNode *&b){
 	
 	auto tmp = a;
 	a = b;
 	b = tmp;
 }
-TreeNode &MinimumHeap::getMin(){
+TreeNode *PriorityQueue::getMin(){
 	
 	return this->arr[0];
 }

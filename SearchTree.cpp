@@ -73,23 +73,23 @@ TreeNode *SearchTree::findMax(TreeNode *treeNode){
 	
 	return curr;
 }
-TreeNode * SearchTree::getTreeAsArr(){
+TreeNode **SearchTree::getTreeAsArr(){
 	
-	TreeNode *arr = allocate<TreeNode>(this->length);
+	TreeNode **arr = allocate<TreeNode *>(this->length);
 	
 	int i = 0;
 	this->getTreeAsArr(arr, this->root, this->length, i);
 	
 	return arr;
 }
-void SearchTree::getTreeAsArr(TreeNode *arr, TreeNode *curr, int size, int &i){
+void SearchTree::getTreeAsArr(TreeNode **arr, TreeNode *curr, int size, int &i){
 	
 	if(curr == nullptr || arr == nullptr || i > size)
 		return;
 	
-	this->getTreeAsArr(arr, curr->leftChild(), size, i);
+	this->getTreeAsArr(arr, curr->left, size, i);
 	
-	arr[i++].data = curr->data;
+	arr[i++] = new TreeNode(curr->data);
 	
-	this->getTreeAsArr(arr, curr->rightChild(), size, i);
+	this->getTreeAsArr(arr, curr->right, size, i);
 }

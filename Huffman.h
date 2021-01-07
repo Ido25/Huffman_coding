@@ -6,8 +6,9 @@
 #include "SearchTree.h"
 
 Pair *getBuckets(ifstream &in);
-SearchTree buildSearchTreeFromBuckets(Pair *buckets);
-TreeNode *buildHuffmanTree(SearchTree &sr);
+SearchTree *buildSearchTreeFromBuckets(Pair *buckets);
+TreeNode *buildHuffmanTree(SearchTree *sr);
 void printHuffmanCoding(TreeNode *huffman);
 void huffmanHelper(TreeNode *huffman, int *arr, int &writeIndex);
 void getHuffmanWeight(TreeNode *huffman, int &depth, int &sum);
+

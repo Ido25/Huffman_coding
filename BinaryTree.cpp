@@ -2,8 +2,13 @@
 
 BinaryTree::~BinaryTree(){
 	
-	deleteSubTree(this->root->left);
-	deleteSubTree(this->root->right);
+	if(this-> root == nullptr)
+		return;
+	
+	if(this->root->left != nullptr)
+		deleteSubTree(this->root->left);
+	if(this->root->right != nullptr)
+		deleteSubTree(this->root->right);
 	
 	delete root;
 }
@@ -37,15 +42,20 @@ TreeNode *BinaryTree::findHelper(TreeNode *_root, unsigned int key){
 }
 void BinaryTree::insert(TreeNode *treeNode){
 	
-	TreeNode *curr = this->root;
-	bool inserted = false;
 	this->length++;
+	if(this->root == nullptr){
+		this->root = treeNode;
+		return;
+	}
 	
-	while(!inserted && curr != nullptr){
-		if(treeNode->data.getPriority() <= curr->data.getPriority()){
+	unsigned int key = treeNode->data.getPriority();
+	
+	TreeNode *curr = this->root;
+	while(curr != nullptr){
+		if(key < curr->data.getPriority()){
 			if(curr->left == nullptr){
 				curr->left = treeNode;
-				inserted = true;
+				return;
 			}
 			else
 				curr = curr->left;
@@ -53,7 +63,7 @@ void BinaryTree::insert(TreeNode *treeNode){
 		else{
 			if(curr->right == nullptr){
 				curr->right = treeNode;
-				inserted = true;
+				return;
 			}
 			else
 				curr = curr->right;
@@ -76,6 +86,7 @@ TreeNode *BinaryTree::findParent(TreeNode *_root, unsigned int key){
 }
 void BinaryTree::Delete(unsigned int key){
 	
+	this->length--;
 	TreeNode *curr = find(key);
 	
 	if(curr->left == nullptr && curr->right == nullptr){

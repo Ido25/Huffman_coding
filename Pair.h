@@ -16,7 +16,7 @@ class Pair{
 	~Pair(){};
 	
 	char getValue(){ return this->value; }
-	int getPriority(){ return this->priority; }
+	unsigned int getPriority(){ return this->priority; }
 	bool setPriority(int pr){ return this->priority = pr; };
 	bool setvalue(char val){ return this->value = val; };
 	

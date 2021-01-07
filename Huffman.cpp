@@ -1,5 +1,5 @@
 #include "Huffman.h"
-#include "MinimumHeap.h"
+#include "PriorityQueue.h"
 
 Pair *getBuckets(ifstream &in){
 	
@@ -12,48 +12,45 @@ Pair *getBuckets(ifstream &in){
 	
 	char ch, tmp;
 	
-	in >> tmp;
-	++buckets[tmp];
 	while(!in.eof()){
 		if(!in.good())
 			HandleError();
 		
-		in >> tmp;
+		tmp = in.get();
 		++buckets[tmp];
 	}
 	
 	return buckets;
 }
-SearchTree buildSearchTreeFromBuckets(Pair *buckets){
+SearchTree *buildSearchTreeFromBuckets(Pair *buckets){
 	
-	SearchTree tree;
+	SearchTree *tree = new SearchTree();
 	
-	for(int i = 0; i < MAX_SIZE; i++)
+	for(int i = 0; i < MAX_SIZE; i++){
 		if(buckets[i].getPriority() > 0)
-			tree.insert(buckets[i]);
+			tree->insert(buckets[i]); // problem here. tree as list
+	}
 	
 	return tree;
 }
-TreeNode *buildHuffmanTree(SearchTree &sr){
+TreeNode *buildHuffmanTree(SearchTree *sr){
 	
-	TreeNode *arr = sr.getTreeAsArr();
-	MinimumHeap H(arr, sr.len());
-	TreeNode node;
+	TreeNode **arr = sr->getTreeAsArr();
+	PriorityQueue H(arr, sr->len());
+	TreeNode *node;
 	
-	for(int i = 1; i < sr.len(); i++){
-		TreeNode *a = new TreeNode(H.deleteMin().getData());
-		TreeNode *b = new TreeNode(H.deleteMin().getData());
-		
+	for(int i = 1; i < sr->len(); i++){
+		TreeNode *a = H.deleteMin();
+		TreeNode *b = H.deleteMin();
 		Pair total(a->getPriority() + b->getPriority(), -1);
-		node = TreeNode(total, a, b);
+		node = new TreeNode(total, a, b);
 		H.insert(node);
 	}
 	
-	node = H.deleteMin();
-	return new TreeNode(node.getData(), node.leftChild(), node.rightChild());
+	return H.deleteMin();
 }
 void printHuffmanCoding(TreeNode *huffman){
-
+	
 	// left is 0, right is 1.
 	if(huffman == nullptr)
 		return;
@@ -66,20 +63,22 @@ void printHuffmanCoding(TreeNode *huffman){
 	int i = 0;
 	
 	cout << "Character encoding:" << endl;
-	huffmanHelper(huffman, code, i);
+	
+	if(huffman->leftChild() == nullptr && huffman->rightChild() == nullptr){
+		cout << "'" << huffman->getValue() << "' - 1";
+	}
+	else huffmanHelper(huffman, code, i);
 }
 void huffmanHelper(TreeNode *huffman, int *arr, int &writeIndex){
-
-	if(huffman == nullptr || arr == nullptr || writeIndex >= 7)
+	
+	if(huffman == nullptr || arr == nullptr || writeIndex >= 7 || writeIndex < 0)
 		return;
 	
 	if(huffman->leftChild() == nullptr && huffman->rightChild() == nullptr){
-		cout << "'" << huffman->getValue() << "' - " ;
+		cout << "'" << huffman->getValue() << "' - ";
 		for(int j = 0; j < writeIndex; j++)
 			cout << arr[j];
 		cout << endl;
-		
-		writeIndex--;
 	}
 	
 	if(huffman->leftChild() != nullptr){
@@ -98,13 +97,14 @@ void getHuffmanWeight(TreeNode *huffman, int &depth, int &sum){
 	
 	// this function compute the file size in bytes
 	
-	if(huffman == nullptr || depth >= 7)
+	if(huffman == nullptr || depth >= 7 || depth < 0)
 		return;
 	
 	if(huffman->leftChild() == nullptr && huffman->rightChild() == nullptr){
-		sum += huffman->getPriority() * depth;
-		
-		depth--;
+		if(depth == 0)
+			sum += huffman->getPriority();
+		else
+			sum += huffman->getPriority() * depth;
 	}
 	
 	if(huffman->leftChild() != nullptr){
