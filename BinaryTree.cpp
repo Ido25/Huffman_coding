@@ -133,3 +133,4 @@ BinaryTree &BinaryTree::operator=(BinaryTree &org){
 	this->length = org.length;
 	
 	return *this;
+}

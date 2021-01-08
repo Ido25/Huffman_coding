@@ -24,7 +24,7 @@ class BinaryTree{
 	int len(){ return this->length; }
 	int getDepth();
 	TreeNode *getRoot(){ return this->root; }
-	void setLeftChild(TreeNode *left);
-	void setRightChild(TreeNode *right);
+	void setRootsLeftChild(TreeNode *left);
+	void setRootsRightChild(TreeNode *right);
 	BinaryTree &operator=(BinaryTree &org);
 };
