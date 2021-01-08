@@ -13,6 +13,7 @@ class TreeNode{
 	friend class BinaryTree;
 	friend class SearchTree;
 	TreeNode() : left(nullptr), right(nullptr){};
+	TreeNode(TreeNode &org){ *this = org; }
 	TreeNode(Pair _data, TreeNode *_left = nullptr, TreeNode *_right = nullptr) : data(_data), left(_left),
 																				  right(_right){};
 	~TreeNode() = default;
@@ -22,12 +23,8 @@ class TreeNode{
 	void postorder();
 	TreeNode *leftChild(){ return this->left; }
 	TreeNode *rightChild(){ return this->right; }
-	
 	unsigned int getPriority(){ return this->data.getPriority(); }
 	char getValue(){ return this->data.getValue(); }
-	
 	TreeNode &operator=(const TreeNode &org);
-	
-	// copy ctor, operator =
 };
 

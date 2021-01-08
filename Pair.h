@@ -12,7 +12,8 @@ class Pair{
   
   public:
 	Pair(){};
-	Pair(unsigned int _key , char _val) : priority(_key), value(_val){};
+	Pair(Pair &org){ *this = org; }
+	Pair(unsigned int _key, char _val) : priority(_key), value(_val){};
 	~Pair(){};
 	
 	char getValue(){ return this->value; }
@@ -22,7 +23,6 @@ class Pair{
 	
 	Pair &operator=(const Pair &org);
 	Pair &operator++();
-	
 	friend ostream &operator<<(ostream &os, const Pair &org){
 		
 		os << "Priority: " << org.priority << ", Value: " << org.value << endl;

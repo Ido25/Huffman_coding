@@ -2,7 +2,7 @@
 
 BinaryTree::~BinaryTree(){
 	
-	if(this-> root == nullptr)
+	if(this->root == nullptr)
 		return;
 	
 	if(this->root->left != nullptr)
@@ -49,7 +49,6 @@ void BinaryTree::insert(TreeNode *treeNode){
 	}
 	
 	unsigned int key = treeNode->data.getPriority();
-	
 	TreeNode *curr = this->root;
 	while(curr != nullptr){
 		if(key < curr->data.getPriority()){
@@ -105,3 +104,32 @@ void BinaryTree::insert(Pair &p){
 	
 	this->insert(new TreeNode(p));
 }
+int BinaryTree::getDepth(){
+	
+	if(this->root == nullptr)
+		return 0;
+	
+	return this->getDepthHelper(this->root, 0);
+}
+int BinaryTree::getDepthHelper(TreeNode *node, int depth){
+	
+	if(node == nullptr)
+		return (depth - 1);
+	
+	if(node->left == nullptr && node->right == nullptr)
+		return depth;
+	
+	int depth_left = this->getDepthHelper(node->left, depth + 1);
+	int depth_right = this->getDepthHelper(node->right, depth + 1);
+	
+	return depth_left > depth_right ? depth_left : depth_right;
+}
+BinaryTree &BinaryTree::operator=(BinaryTree &org){
+	
+	if(this == &org)
+		return *this;
+	
+	this->root = org.root;
+	this->length = org.length;
+	
+	return *this;
