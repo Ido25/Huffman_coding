@@ -1,5 +1,6 @@
 #include "BinaryTree.h"
 
+
 BinaryTree::~BinaryTree(){
 	
 	if(this->root == nullptr)
@@ -104,7 +105,7 @@ void BinaryTree::insert(Pair &p){
 	
 	this->insert(new TreeNode(p));
 }
-int BinaryTree::getDepth(){
+int BinaryTree::getHeight(){
 	
 	if(this->root == nullptr)
 		return 0;
@@ -133,4 +134,9 @@ BinaryTree &BinaryTree::operator=(BinaryTree &org){
 	this->length = org.length;
 	
 	return *this;
+}
+BinaryTree::BinaryTree(TreeNode *_root){
+	
+	this->root = _root;
+	this->length = this->getHeight();
 }

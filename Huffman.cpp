@@ -4,7 +4,7 @@
 Pair *getBuckets(ifstream &in){
 	
 	Pair *buckets = allocate<Pair>(MAX_SIZE);
-	
+	//read text from file and sum each char's amount
 	for(int i = 0; i < MAX_SIZE; i++){
 		buckets[i].setPriority(0);
 		buckets[i].setvalue(i);
@@ -28,12 +28,12 @@ SearchTree *buildSearchTreeFromBuckets(Pair *buckets){
 	
 	for(int i = 0; i < MAX_SIZE; i++){
 		if(buckets[i].getPriority() > 0)
-			tree->insert(buckets[i]); // problem here. tree as list
+			tree->insert(buckets[i]);
 	}
 	
 	return tree;
 }
-TreeNode *buildHuffmanTree(SearchTree *sr){
+BinaryTree *buildHuffmanTree(SearchTree *sr){
 	
 	TreeNode **arr = sr->getTreeAsArr();
 	PriorityQueue H(arr, sr->len());
@@ -43,39 +43,61 @@ TreeNode *buildHuffmanTree(SearchTree *sr){
 		TreeNode *a = H.deleteMin();
 		TreeNode *b = H.deleteMin();
 		Pair total(a->getPriority() + b->getPriority(), -1);
-		node = new TreeNode(total, a, b);
+		
+		try{
+			node = new TreeNode(total, a, b);
+		}
+		catch(bad_alloc &ex){
+			HandleError();
+		}
+		
 		H.insert(node);
 	}
 	
-	return H.deleteMin();
+	BinaryTree *res;
+	
+	try{
+		res = new BinaryTree(H.deleteMin());
+	}
+	catch(bad_alloc &ex){
+		HandleError();
+	}
+	
+	return res;
 }
-void printHuffmanCoding(TreeNode *huffman){
+void printHuffmanCoding(BinaryTree *huffman, int max_depth){
 	
 	// left is 0, right is 1.
 	if(huffman == nullptr)
 		return;
 	
-	int code[7];
-	
-	for(int i = 0; i < 7; i++)
+	int *code = allocate<int>(max_depth);
+	for(int i = 0; i < max_depth; i++)
 		code[i] = 0;
 	
 	int i = 0;
 	
 	cout << "Character encoding:" << endl;
 	
-	if(huffman->leftChild() == nullptr && huffman->rightChild() == nullptr){
-		cout << "'" << huffman->getValue() << "' - 1";
+	if(huffman->getRoot()->leftChild() == nullptr && huffman->getRoot()->rightChild() == nullptr){
+		cout << "'" << huffman->getRoot()->getValue() << "' - 1";
 	}
-	else huffmanHelper(huffman, code, i);
-}
-void huffmanHelper(TreeNode *huffman, int *arr, int &writeIndex){
+	else huffmanHelper(huffman->getRoot(), code, i, max_depth);
 	
-	if(huffman == nullptr || arr == nullptr || writeIndex >= 7 || writeIndex < 0)
+	delete[] code;
+}
+void huffmanHelper(TreeNode *huffman, int *arr, int &writeIndex, int max_depth){
+	
+	if(huffman == nullptr || arr == nullptr || writeIndex > max_depth || writeIndex < 0)
 		return;
 	
 	if(huffman->leftChild() == nullptr && huffman->rightChild() == nullptr){
-		cout << "'" << huffman->getValue() << "' - ";
+		char text[3] = " ";
+		
+		// normalize the output to print '\n' or '\t' in case needed.
+		normalizeOutput(text, huffman->getValue());
+		cout << "'" << text << "' - ";
+		
 		for(int j = 0; j < writeIndex; j++)
 			cout << arr[j];
 		cout << endl;
@@ -83,21 +105,21 @@ void huffmanHelper(TreeNode *huffman, int *arr, int &writeIndex){
 	
 	if(huffman->leftChild() != nullptr){
 		arr[writeIndex++] = 0;
-		huffmanHelper(huffman->leftChild(), arr, writeIndex);
+		huffmanHelper(huffman->leftChild(), arr, writeIndex, max_depth);
 		writeIndex--;
 	}
 	
 	if(huffman->rightChild() != nullptr){
 		arr[writeIndex++] = 1;
-		huffmanHelper(huffman->rightChild(), arr, writeIndex);
+		huffmanHelper(huffman->rightChild(), arr, writeIndex, max_depth);
 		writeIndex--;
 	}
 }
-void getHuffmanWeight(TreeNode *huffman, int &depth, int &sum){
+void getHuffmanWeight(TreeNode *huffman, int &depth, int &sum, int max_depth){
 	
-	// this function compute the file size in bytes
+	// this function computes the file size in bytes
 	
-	if(huffman == nullptr || depth >= 7 || depth < 0)
+	if(huffman == nullptr || depth > max_depth || depth < 0)
 		return;
 	
 	if(huffman->leftChild() == nullptr && huffman->rightChild() == nullptr){
@@ -109,13 +131,13 @@ void getHuffmanWeight(TreeNode *huffman, int &depth, int &sum){
 	
 	if(huffman->leftChild() != nullptr){
 		depth++;
-		getHuffmanWeight(huffman->leftChild(), depth, sum);
+		getHuffmanWeight(huffman->leftChild(), depth, sum, max_depth);
 		depth--;
 	}
 	
 	if(huffman->rightChild() != nullptr){
 		depth++;
-		getHuffmanWeight(huffman->rightChild(), depth, sum);
+		getHuffmanWeight(huffman->rightChild(), depth, sum, max_depth);
 		depth--;
 	}
 }

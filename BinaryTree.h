@@ -16,15 +16,13 @@ class BinaryTree{
   public:
 	BinaryTree() : root(nullptr), length(0){};
 	BinaryTree(BinaryTree &org){ *this = org; };
-	BinaryTree(TreeNode *_root) : root(_root), length(0){};
+	BinaryTree(TreeNode *_root);
 	~BinaryTree();
 	virtual TreeNode *find(unsigned int key);
 	void insert(Pair &p);
 	virtual void Delete(unsigned int key);
 	int len(){ return this->length; }
-	int getDepth();
+	int getHeight();
 	TreeNode *getRoot(){ return this->root; }
-	void setRootsLeftChild(TreeNode *left);
-	void setRootsRightChild(TreeNode *right);
 	BinaryTree &operator=(BinaryTree &org);
 };

@@ -4,9 +4,8 @@
 #include <stdlib.h>
 
 using namespace std;
-
-static constexpr int MAX_SIZE = 127;
-static constexpr unsigned int OUT_OF_RANGE = -1;
+//max chars amount
+static constexpr int MAX_SIZE = 256;
 static constexpr char ERR_MSG[] = "invalid input";
 
 static inline void HandleError(){

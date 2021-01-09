@@ -74,9 +74,8 @@ TreeNode *SearchTree::findMax(TreeNode *treeNode){
 	return curr;
 }
 TreeNode **SearchTree::getTreeAsArr(){
-	
+	//converts tree into array
 	TreeNode **arr = allocate<TreeNode *>(this->length);
-	
 	int i = 0;
 	this->getTreeAsArr(arr, this->root, this->length, i);
 	

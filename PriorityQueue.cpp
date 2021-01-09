@@ -34,11 +34,11 @@ void PriorityQueue::heapify(int node){
 	if(node >= this->heap_size)
 		return;
 	
-	int min = node, left, right;
+	int min, left, right;
 	
 	do{
-		left = this->getLeft(min);
-		right = this->getRight(min);
+		left = this->getLeft(node);
+		right = this->getRight(node);
 		
 		if(left < this->heap_size && this->arr[left]->getPriority() < this->arr[node]->getPriority())
 			min = left;
@@ -54,7 +54,6 @@ void PriorityQueue::heapify(int node){
 			node = min;
 			min = temp;
 		}
-		
 	} while(min != node);
 }
 TreeNode *PriorityQueue::deleteMin(){
@@ -80,7 +79,6 @@ void PriorityQueue::insert(TreeNode *item){
 		this->arr[idx] = this->arr[this->getParent(idx)];
 		idx = this->getParent(idx);
 	}
-	
 	this->arr[idx] = item;
 }
 int PriorityQueue::getLeft(int node){

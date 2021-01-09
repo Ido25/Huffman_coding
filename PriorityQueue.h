@@ -6,7 +6,7 @@
 #include "TreeNode.h"
 
 using namespace std;
-
+//Priority Queue that is implemented  using a Minimum Heap
 class PriorityQueue{
   private:
 	TreeNode **arr;
